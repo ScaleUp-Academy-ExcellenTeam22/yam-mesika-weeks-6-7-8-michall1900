@@ -24,7 +24,7 @@ class Message:
         self.title = title
         self.body = body
         self.sender = sender
-        self.is_read = False
+        self.is_read_before = False
 
     def __str__(self):
         return f"id = {self.message_id}\ntitle: {self.title}\ncontent: {self.body}\nfrom {self.sender}\n"
@@ -41,13 +41,17 @@ class Message:
         """
         return string in self.body or string in self.title
 
-    @property
-    def is_read(self):
-        return self.__is_read
+    def mark_as_read(self) -> None:
+        """ Mark message as reading one.
+        :return: None.
+        """
+        self.is_read_before = True
 
-    @is_read.setter
-    def is_read(self, is_read: bool):
-        self.__is_read = is_read
+    def is_read(self) -> bool:
+        """ Return true if the message read, otherwise false.
+        :return: True if message read, otherwise false.
+        """
+        return self.is_read_before
 
 
 def main_message():
