@@ -8,7 +8,7 @@ class Message:
     :ivar title: The title of the message.
     :ivar body: The body of the message.
     :ivar sender: The name of the person that sent the message.
-    :ivar is_read: Flag to mark that the current message read before.
+    :ivar is_read_before: Flag to mark that the current message read before.
 
     :param message_id: The id of the message.
     :param title: The title of the message.
@@ -21,26 +21,30 @@ class Message:
         self.title = title
         self.body = body
         self.sender = sender
-        self.is_read = False
+        self.is_read_before = False
 
     def __str__(self):
         return f"id = {self.message_id}\ntitle: {self.title}\ncontent: {self.body}\nfrom {self.sender}\n"
 
     def is_string_in_message(self, string: str) -> bool:
-        """ Returns if string appear inside message's body.
+        """ Returns if string appear inside message's body/ title.
 
-        :param str string: String to search for it inside message's content.
+        :param string: String to search for it inside message's content.
         :return: True if it is, otherwise false.
         """
         return string in self.body or string in self.title
 
-    @property
-    def is_read(self):
-        return self.__is_read
+    def mark_as_read(self) -> None:
+        """ Mark message as reading one.
+        :return: None.
+        """
+        self.is_read_before = True
 
-    @is_read.setter
-    def is_read(self, is_read: bool):
-        self.__is_read = is_read
+    def is_read(self) -> bool:
+        """ Return true if the message read, otherwise false.
+        :return: True if message read, otherwise false.
+        """
+        return self.is_read_before
 
 
 class PostOffice:
@@ -96,8 +100,8 @@ class PostOffice:
         # Written like this because I wanted to mark all of the messages as read.
         return_lst = []
         for message in self.boxes[user_name][:number_of_messages]:
-            if not message.is_read:
-                message.is_read = True
+            if not message.is_read():
+                message.mark_as_read()
                 return_lst.append(message)
         return return_lst
 
