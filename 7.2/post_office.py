@@ -5,31 +5,34 @@ class Message:
     """ A Message class. Allow create message with all of its details.
 
     :ivar message_id: The id of the message.
+    :ivar title: The title of the message.
     :ivar body: The body of the message.
     :ivar sender: The name of the person that sent the message.
     :ivar is_read: Flag to mark that the current message read before.
 
     :param message_id: The id of the message.
+    :param title: The title of the message.
     :param body: The body of the message.
     :param sender: The name of the person that sent the message.
     """
 
-    def __init__(self, message_id: int, body: str, sender: str):
+    def __init__(self, message_id: int, title: str, body: str, sender: str):
         self.message_id = message_id
+        self.title = title
         self.body = body
         self.sender = sender
         self.is_read = False
 
     def __str__(self):
-        return f"id = {self.message_id}\ncontent: {self.body}\nfrom {self.sender}\n"
+        return f"id = {self.message_id}\ntitle: {self.title}\ncontent: {self.body}\nfrom {self.sender}\n"
 
-    def is_string_in_body(self, string: str) -> bool:
+    def is_string_in_message(self, string: str) -> bool:
         """ Returns if string appear inside message's body.
 
         :param str string: String to search for it inside message's content.
         :return: True if it is, otherwise false.
         """
-        return string in self.body
+        return string in self.body or string in self.title
 
     @property
     def is_read(self):
@@ -53,15 +56,16 @@ class PostOffice:
         self.message_id = 0
         self.boxes = {user: [] for user in usernames}
 
-    def send_message(self, sender: str, recipient: str, message_body: str, urgent: bool = False) -> int:
+    def send_message(self, sender: str, recipient: str, title: str, message_body: str, urgent: bool = False) -> int:
         """Send a message to a recipient.
 
         Note: My changes- Message now is an class object that include all of the details about it that was here
-        before. I think it's more appropriate.
+        before. I think it's more appropriate. Moreover, I added title to the messages.
 
-        :param str sender: The message sender's username.
-        :param str recipient: The message recipient's username.
-        :param str message_body: The body of the message.
+        :param sender: The message sender's username.
+        :param recipient: The message recipient's username.
+        :param title: Message's title.
+        :param message_body: The body of the message.
         :param urgent: The urgency of the message.
         :type urgent: bool, optional
         :return: The message ID, auto incremented number.
@@ -70,7 +74,7 @@ class PostOffice:
         """
         user_box = self.boxes[recipient]
         self.message_id = self.message_id + 1
-        message_details = Message(self.message_id, message_body, sender)
+        message_details = Message(self.message_id, title, message_body, sender)
         if urgent:
             user_box.insert(0, message_details)
         else:
@@ -105,7 +109,7 @@ class PostOffice:
         :return: List of the messages that including the string at their body.
         :raises KeyError: If user name doesn't exist.
         """
-        return [message for message in self.boxes[user_name] if message.is_string_in_body(string)]
+        return [message for message in self.boxes[user_name] if message.is_string_in_message(string)]
 
 
 def main_post_office() -> None:
@@ -113,9 +117,9 @@ def main_post_office() -> None:
     :return: None.
     """
     my_post_office = PostOffice(["Shay", "Emanuel", "Sharon", "Itzik"])
-    my_post_office.send_message("Shay", "Itzik", "Hi, it's me. How are you?", True)
-    my_post_office.send_message("Emanuel", "Itzik", "Hello Itzik,\nAre you looking for a job?")
-    my_post_office.send_message("Sharon", "Itzik", "Hi")
+    my_post_office.send_message("Shay", "Itzik", "Interested in you", "Hi, it's me. How are you?", True)
+    my_post_office.send_message("Emanuel", "Itzik", "Job offer", "Hello Itzik,\nAre you looking for a job?")
+    my_post_office.send_message("Sharon", "Itzik", "Hi", "Hi")
     print("\n".join([str(message) for message in my_post_office.read_inbox("Itzik", 2)]))
     print("\n".join([str(message) for message in my_post_office.read_inbox("Itzik", 3)]))
     print("\n".join([str(message) for message in my_post_office.search_inbox("Itzik", "?")]))
