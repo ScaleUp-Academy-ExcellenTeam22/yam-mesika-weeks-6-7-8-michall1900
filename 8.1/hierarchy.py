@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Literal, Tuple, Union
 
 
@@ -16,7 +16,7 @@ class User(ABC):
     :param password: Wanted password.
 
     """
-
+    @abstractmethod
     def __init__(self, user_name: str, password: str):
         self.user_name = user_name
         self.password = password
@@ -46,12 +46,14 @@ class User(ABC):
 
 class SystemAdministratorUser(User):
     """ A System administrator user class. Inherits from User class."""
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class RegularUser(User):
     """ A Regular user class. Inherits from User class."""
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class File(ABC):
@@ -62,7 +64,7 @@ class File(ABC):
     :param file_name: File's name.
 
     """
-
+    @abstractmethod
     def __init__(self, file_name: str):
         self.file_name = file_name
 
