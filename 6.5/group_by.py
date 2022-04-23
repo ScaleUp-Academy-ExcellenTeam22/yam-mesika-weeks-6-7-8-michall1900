@@ -26,7 +26,7 @@ def main_group_by() -> None:
     Print the dictionary that has been receives after using group_by function.
     :return: None
     """
-    print(group_by(set, ["hi", "bye", "yo", "try"]))
+    print(group_by(len, ["hi", "bye", "yo", "try"]))
 
 
 if __name__ == "__main__":
