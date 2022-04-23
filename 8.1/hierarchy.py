@@ -166,13 +166,13 @@ class Directory(File):
         :raises: ValueError if file's name already at the list. 
         """
         try:
-            if self.get_file(file.get_name()):
+            if not self.get_file(file.get_name()):
                 self._my_files.append(file)
             else:
-                raise ValueError
+                raise ValueError(f"There is already file named {file.get_name()} at the current directory.")
 
-        except ValueError:
-            print("There is already file with that name at the current directory.")
+        except ValueError as error:
+            print(error)
 
     def delete_file(self, file_name) -> None:
         """ Delete file from list.
@@ -195,5 +195,32 @@ class Directory(File):
                 return file
 
 
+def main_hierarchy() -> None:
+    """ Doing some test on The classes.
+    :return: None.
+    """
+    my_user = RegularUser(user_name="user1", password="123")
+    other_user = RegularUser(user_name="user2", password="1234")
+    admin = SystemAdministratorUser(user_name="admin", password="1111")
+    print("Create directory named a")
+    my_user_directory = my_user.create_file("directory", "a")
+    print("Try to add banana txt file")
+    my_user_directory.add_file(my_user.create_file("txt", "banana", "It's my favorite food! food food"))
+    print("'a' directory print:\n", my_user_directory)
+    print("Trying to add file named 'banana' again:")
+    my_user_directory.add_file(my_user.create_file("txt", "banana", "bla bla"))
+    print("'a' directory print:\n", my_user_directory)
+    print("My user trying to read banana:")
+    print(my_user_directory.get_file("banana").read(my_user))
+    print("Other user trying to read banana:")
+    print(my_user_directory.get_file("banana").read(other_user))
+    print("Admin trying to read banana:")
+    print(my_user_directory.get_file("banana").read(admin))
+    print(f"At file {str(my_user_directory.get_file('banana'))} the number of appearance of the word 'food': ",
+          my_user_directory.get_file("banana").count("food"))
+    my_user_directory.delete_file("banana")
+    print("After delete banana, 'a' directory include:\n", my_user_directory)
+
+
 if __name__ == "__main__":
-    pass
+    main_hierarchy()
