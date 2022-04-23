@@ -44,7 +44,7 @@ def get_line_in_file(file_path: str, line_number: int) -> str:
     try:
         with open(file_path, "r") as find_in_file:
             index = line_number - 1
-            if line_number < 0:
+            if line_number <= 0:
                 raise ValueError("line_number should be integer and greater than zero")
             return find_in_file.read().split("\n")[index]
 
@@ -64,7 +64,7 @@ def main_the_syndicate() -> None:
     print(get_line_in_file(r"txt.txt", "a"))
     print(get_line_in_file(r"txt.txt", -3))
     print(get_line_in_file(r"txt.txt", 10))
-    print(get_line_in_file(r"txt.txt", 4))
+    print(get_line_in_file(r"txt.txt", 1))
     """
 
 
