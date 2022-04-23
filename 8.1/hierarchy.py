@@ -46,14 +46,14 @@ class User(ABC):
 
 class SystemAdministratorUser(User):
     """ A System administrator user class. Inherits from User class."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class RegularUser(User):
     """ A Regular user class. Inherits from User class."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class File(ABC):
