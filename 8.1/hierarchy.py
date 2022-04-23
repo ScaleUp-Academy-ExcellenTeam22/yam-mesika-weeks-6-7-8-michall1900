@@ -165,11 +165,15 @@ class Directory(File):
         :return: None.
         :raises: ValueError if file's name already at the list. 
         """
-        if self.get_file(file.get_name()):
-            self._my_files.append(file)
-        else:
-            raise ValueError
-        
+        try:
+            if self.get_file(file.get_name()):
+                self._my_files.append(file)
+            else:
+                raise ValueError
+
+        except ValueError:
+            print("There is already file with that name at the current directory.")
+
     def delete_file(self, file_name) -> None:
         """ Delete file from list.
         :param file_name: The wanted file to delete. 
