@@ -32,7 +32,7 @@ class Message:
         :param string: String to search for it inside message's content.
         :return: True if it is, otherwise false.
         """
-        return string in self.body or string in self.title
+        return string.lower() in self.body.lower() or string in self.title.lower()
 
     def mark_as_read(self) -> None:
         """ Mark message as reading one.
@@ -124,6 +124,8 @@ def main_post_office() -> None:
     my_post_office.send_message("Shay", "Itzik", "Interested in you", "Hi, it's me. How are you?", True)
     my_post_office.send_message("Emanuel", "Itzik", "Job offer", "Hello Itzik,\nAre you looking for a job?")
     my_post_office.send_message("Sharon", "Itzik", "Hi", "Hi")
+
+    # Note: The print lines is looking like that because list using repr so new line appeared as character.
     print("\n".join([str(message) for message in my_post_office.read_inbox("Itzik", 2)]))
     print("\n".join([str(message) for message in my_post_office.read_inbox("Itzik", 3)]))
     print("\n".join([str(message) for message in my_post_office.search_inbox("Itzik", "?")]))
